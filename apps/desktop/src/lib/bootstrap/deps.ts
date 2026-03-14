@@ -37,6 +37,7 @@ import { DiffService, DIFF_SERVICE } from "$lib/hunks/diffService.svelte";
 import { IrcClient, IRC_CLIENT } from "$lib/irc/ircClient.svelte";
 import { IrcService, IRC_SERVICE } from "$lib/irc/ircService.svelte";
 import { ModeService, MODE_SERVICE } from "$lib/mode/modeService";
+import { ProjectStatusService, PROJECT_STATUS_SERVICE } from "$lib/project/projectStatusService";
 import { ProjectsService, PROJECTS_SERVICE } from "$lib/project/projectsService";
 import { PROMPT_SERVICE, PromptService } from "$lib/prompt/promptService";
 import { REMOTES_SERVICE, RemotesService } from "$lib/remotes/remotesService";
@@ -156,6 +157,7 @@ export function initDependencies(args: {
 	// ============================================================================
 
 	const projectsService = new ProjectsService(clientState.backendApi, homeDir, backend);
+	const projectStatusService = new ProjectStatusService(clientState.backendApi);
 	const gitConfig = new GitConfigService(clientState.backendApi, clientState.dispatch, backend);
 
 	// ============================================================================
@@ -356,6 +358,7 @@ export function initDependencies(args: {
 		[OPLOG_SERVICE, oplogService],
 		[ORGANIZATION_SERVICE, organizationService],
 		[POSTHOG_WRAPPER, posthog],
+		[PROJECT_STATUS_SERVICE, projectStatusService],
 		[PROJECTS_SERVICE, projectsService],
 		[PROMPT_SERVICE, promptService],
 		[ATTACHMENT_SERVICE, attachmentService],

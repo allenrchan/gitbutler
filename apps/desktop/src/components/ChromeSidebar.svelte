@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
 	import ProfileButton from "$components/ProfileButton.svelte";
+	import RepoStatusIndicators from "$components/RepoStatusIndicators.svelte";
 	import ShareIssueModal from "$components/ShareIssueModal.svelte";
 	import { ircEnabled } from "$lib/config/uiFeatureFlags";
 	import {
@@ -195,6 +196,7 @@
 				/>
 			</div>
 		{/if}
+		<RepoStatusIndicators activeProjectId={projectId} />
 	</div>
 	<div class="bottom">
 		<div class="bottom__primary-actions">

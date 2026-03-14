@@ -39,6 +39,7 @@ export enum ReduxTag {
 	IntegrationSteps = "IntegrationSteps",
 	GitConfigProperty = "GitConfigProperty",
 	GitButlerConfig = "GitButlerConfig",
+	ProjectChangeStatus = "ProjectChangeStatus",
 }
 
 type Tag<T extends string | number> = {

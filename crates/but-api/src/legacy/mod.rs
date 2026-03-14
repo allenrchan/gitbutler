@@ -28,6 +28,9 @@ pub mod virtual_branches;
 pub mod workspace;
 pub mod worktree;
 
+// -- custom modules (fork-local) --
+pub mod project_status;
+
 fn legacy_project(
     project_id: ProjectHandleOrLegacyProjectId,
 ) -> anyhow::Result<gitbutler_project::Project> {
