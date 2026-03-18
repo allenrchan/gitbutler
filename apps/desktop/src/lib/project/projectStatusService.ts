@@ -7,6 +7,10 @@ export type ProjectChangeStatus = {
 	change_count: number;
 };
 
+export type ProjectPrStatus = {
+	has_failed_prs: boolean;
+};
+
 export const PROJECT_STATUS_SERVICE = new InjectionToken<ProjectStatusService>(
 	"ProjectStatusService",
 );
@@ -24,6 +28,13 @@ export class ProjectStatusService {
 			{ subscriptionOptions: { pollingInterval } },
 		);
 	}
+
+	checkProjectPrStatus(projectId: string, pollingInterval?: number) {
+		return this.api.endpoints.checkProjectPrStatus.useQuery(
+			{ projectId },
+			{ subscriptionOptions: { pollingInterval } },
+		);
+	}
 }
 
 function injectEndpoints(api: BackendApi) {
@@ -34,6 +45,12 @@ function injectEndpoints(api: BackendApi) {
 				query: (args) => args,
 				providesTags: (_result, _error, args) =>
 					providesItem(ReduxTag.ProjectChangeStatus, args.path),
+			}),
+			checkProjectPrStatus: build.query<ProjectPrStatus, { projectId: string }>({
+				extraOptions: { command: "check_project_pr_status" },
+				query: (args) => args,
+				providesTags: (_result, _error, args) =>
+					providesItem(ReduxTag.ProjectPrStatus, args.projectId),
 			}),
 		}),
 	});

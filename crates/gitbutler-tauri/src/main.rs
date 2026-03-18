@@ -255,6 +255,7 @@ fn main() -> anyhow::Result<()> {
                 legacy::projects::tauri_is_gerrit::is_gerrit,
                 // -- custom commands (fork-local) --
                 legacy::project_status::tauri_check_project_changes::check_project_changes,
+                legacy::project_status::tauri_check_project_pr_status::check_project_pr_status,
                 legacy::repo::tauri_check_signing_settings::check_signing_settings,
                 legacy::repo::tauri_git_clone_repository::git_clone_repository,
                 legacy::repo::tauri_get_commit_file::get_commit_file,

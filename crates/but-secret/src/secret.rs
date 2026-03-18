@@ -97,7 +97,12 @@ pub fn set_application_namespace(identifier: impl Into<String>) {
     // hence the specific condition.
     // HACK: we do this here because it's always called by client binaries, and we want it to work
     //       equally there and automatically.
-    if cfg!(debug_assertions) && cfg!(target_os = "macos") {
+    // Also enable via GITBUTLER_GIT_CREDENTIALS env var at runtime for local release
+    // builds that change code signature on each rebuild, triggering the same prompts.
+    if cfg!(target_os = "macos")
+        && (cfg!(debug_assertions)
+            || std::env::var_os("GITBUTLER_GIT_CREDENTIALS").is_some())
+    {
         git_credentials::setup().ok();
     }
 }
