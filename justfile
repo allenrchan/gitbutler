@@ -117,13 +117,16 @@ clean-all:
 # Fork management
 # ============================================================================
 
-# Sync custom branch onto latest upstream, verify, and push
+# The upstream release tag we base our fork on
+upstream_base := "release/0.19.6"
+
+# Sync custom branch onto latest upstream release, verify, and push
 sync: _sync-rebase _sync-deps _sync-verify _sync-push
 
-# Sync step 1: fetch upstream and rebase
+# Sync step 1: fetch upstream tags and rebase onto the release base
 _sync-rebase:
-    git fetch upstream
-    git rebase upstream/master
+    git fetch upstream --tags
+    git rebase {{upstream_base}}
 
 # Sync step 2: reinstall deps (lockfile may have changed)
 _sync-deps:
@@ -141,10 +144,17 @@ _sync-push:
 # Sync upstream, build .app, install to /Applications, and push
 release: _sync-rebase _sync-deps _sync-verify build-app install-app _sync-push
 
+# Update the fork base to a new upstream release tag
+update-base TAG:
+    @echo "Rebasing onto {{TAG}}..."
+    git fetch upstream --tags
+    git rebase --onto {{TAG}} {{upstream_base}} master
+    @echo "Done. Update upstream_base in justfile to '{{TAG}}' and run 'just sync'."
+
 # Show which files our custom patches touch (conflict risk surface)
 custom-files:
-    git log upstream/master..HEAD --name-only --pretty=format: | sort -u | grep -v '^$'
+    git log {{upstream_base}}..HEAD --name-only --pretty=format: | sort -u | grep -v '^$'
 
 # Show custom commits on top of upstream
 custom-log:
-    git log --oneline upstream/master..HEAD
+    git log --oneline {{upstream_base}}..HEAD
